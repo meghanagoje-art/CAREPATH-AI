@@ -1,0 +1,1405 @@
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAREPATH AI — Your Journey from Symptoms to Structured Care | SIH 2026</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 800: '#0f172a', 900: '#0b0f19', 950: '#05070d' },
+            medical: {
+              50: '#f0f9ff', 100: '#e0f2fe', 500: '#0284c7',
+              600: '#0369a1', 700: '#075985', teal: '#0d9488', emerald: '#059669'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'radar': 'radar 2s linear infinite',
+            'wave': 'wave 1.2s ease-in-out infinite',
+          },
+          keyframes: {
+            radar: {
+              '0%': { transform: 'scale(0.9)', opacity: '0.8' },
+              '100%': { transform: 'scale(1.8)', opacity: '0' }
+            },
+            wave: {
+              '0%, 100%': { height: '8px' },
+              '50%': { height: '28px' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; }
+    .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
+    .glass-dark { background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); border: 1px solid rgba(51, 65, 85, 0.5); }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .emergency-flash { animation: flash 1.5s infinite; }
+    @keyframes flash { 0%, 100% { background-color: rgba(220, 38, 38, 0.08); border-color: #ef4444; } 50% { background-color: rgba(220, 38, 38, 0.22); border-color: #dc2626; } }
+    .view { display: none; }
+    .view.active { display: block; }
+    .step-dot.active { background-color: #0369a1; border-color: #0369a1; color: white; }
+    .step-line.active { background-color: #0369a1; }
+    .mic-ring { animation: micPulse 1.5s infinite; }
+    @keyframes micPulse { 0% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); } 70% { box-shadow: 0 0 0 16px rgba(13, 148, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); } }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-medical-600 selection:text-white">
+
+  <!-- Global Header -->
+  <header class="sticky top-0 z-50 bg-navy-900 text-white border-b border-slate-800 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="goHome()">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-medical-600 to-medical-teal flex items-center justify-center shadow-lg shadow-medical-500/20">
+            <i class="fa-solid fa-heart-pulse text-2xl text-white"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-heading font-extrabold text-2xl tracking-tight text-white">CAREPATH<span class="text-medical-500">AI</span></span>
+              <span class="text-[10px] bg-medical-500/20 text-medical-500 px-2 py-0.5 rounded-full font-semibold border border-medical-500/30">SIH 26047</span>
+            </div>
+            <p class="text-xs text-slate-400 font-medium hidden sm:block">Your Journey from Symptoms to Structured Care</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="runFullDemo()" class="hidden md:flex items-center gap-2 bg-gradient-to-r from-medical-emerald to-medical-teal hover:from-emerald-600 hover:to-teal-600 text-white px-4 py-2 rounded-full font-semibold text-sm shadow-lg shadow-emerald-500/20 transition-all">
+            <i class="fa-solid fa-play"></i> RUN COMPLETE SIH DEMO
+          </button>
+          <button onclick="toggleReadme()" class="text-slate-300 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors" title="About / README">
+            <i class="fa-solid fa-circle-info text-xl"></i>
+          </button>
+          <div id="userPill" class="hidden items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-medical-500 to-medical-teal flex items-center justify-center text-xs font-bold">U</div>
+            <span id="userName" class="text-sm font-medium">Guest</span>
+          </div>
+          <button id="logoutBtn" onclick="logout()" class="hidden text-sm font-medium text-slate-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-colors">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Demo Mode Banner -->
+  <div id="demoBanner" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-1.5 text-xs font-bold tracking-wide">
+    <i class="fa-solid fa-triangle-exclamation mr-1"></i> SIMULATED DEMO MODE — Not connected to real hospital systems
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-grow relative">
+    <!-- Toast container -->
+    <div id="toastContainer" class="fixed top-24 right-4 z-[60] space-y-2 w-80"></div>
+
+    <!-- VIEW: LOGIN -->
+    <section id="view-login" class="view active min-h-[calc(100vh-5rem)] flex items-center justify-center p-4">
+      <div class="max-w-6xl w-full grid lg:grid-cols-2 gap-8 items-center">
+        <div class="space-y-6">
+          <div class="inline-flex items-center gap-2 bg-medical-100 text-medical-700 px-4 py-1.5 rounded-full text-sm font-semibold">
+            <i class="fa-solid fa-award"></i> SIH 2026 — Problem Statement 26047
+          </div>
+          <h1 class="font-heading text-4xl md:text-6xl font-extrabold text-navy-900 leading-tight">
+            Your Journey from <span class="text-transparent bg-clip-text bg-gradient-to-r from-medical-600 to-medical-teal">Symptoms</span> to Structured Care
+          </h1>
+          <p class="text-lg md:text-xl text-slate-600 font-medium">
+            From Symptoms to Hospital Readiness — Before You Arrive.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <div class="flex items-center gap-2 text-sm text-slate-600 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+              <i class="fa-solid fa-microphone-lines text-medical-600"></i> Multilingual Voice AI
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-600 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+              <i class="fa-solid fa-file-waveform text-medical-600"></i> OCR Document AI
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-600 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+              <i class="fa-solid fa-truck-medical text-red-500"></i> Emergency Connect
+            </div>
+          </div>
+          <p class="text-xs text-slate-400">Team TRUTH LENS • Built for Hospitals • Demo data only</p>
+        </div>
+
+        <div class="glass-card rounded-3xl shadow-2xl p-6 md:p-10 border border-slate-200">
+          <h2 class="font-heading text-2xl font-bold text-navy-900 mb-2">Select your role</h2>
+          <p class="text-slate-500 mb-6">Login as a Patient, Doctor, or Hospital Administrator.</p>
+
+          <div class="grid gap-4">
+            <button onclick="login('patient')" class="group flex items-center gap-4 p-5 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 transition-all text-left">
+              <div class="w-14 h-14 rounded-xl bg-medical-100 text-medical-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-user-injured"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-navy-900">Patient</h3>
+                <p class="text-sm text-slate-500">Start your case-taking journey</p>
+              </div>
+            </button>
+
+            <button onclick="login('doctor')" class="group flex items-center gap-4 p-5 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 transition-all text-left">
+              <div class="w-14 h-14 rounded-xl bg-medical-100 text-medical-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-user-doctor"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-navy-900">Doctor / Hospital Staff</h3>
+                <p class="text-sm text-slate-500">Review incoming patients & cases</p>
+              </div>
+            </button>
+
+            <button onclick="login('admin')" class="group flex items-center gap-4 p-5 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 transition-all text-left">
+              <div class="w-14 h-14 rounded-xl bg-medical-100 text-medical-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-navy-900">Hospital Administrator</h3>
+                <p class="text-sm text-slate-500">Analytics, KPIs & system overview</p>
+              </div>
+            </button>
+          </div>
+
+          <div class="mt-6 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 flex items-start gap-2">
+            <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+            <span>This is a standalone demo prototype. All backend, auth, OCR, and hospital integrations are simulated in-browser for demonstration.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: PATIENT -->
+    <section id="view-patient" class="view min-h-[calc(100vh-5rem)] bg-slate-50">
+      <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Progress -->
+        <div id="patientProgress" class="hidden mb-8">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+            <div class="flex flex-col items-center gap-1"><div class="step-dot active w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center transition-colors">1</div><span>Language</span></div>
+            <div class="step-line active flex-1 h-0.5 bg-slate-300 mx-2 transition-colors"></div>
+            <div class="flex flex-col items-center gap-1"><div class="step-dot w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center transition-colors">2</div><span>Consent</span></div>
+            <div class="step-line flex-1 h-0.5 bg-slate-300 mx-2 transition-colors"></div>
+            <div class="flex flex-col items-center gap-1"><div class="step-dot w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center transition-colors">3</div><span>Case</span></div>
+            <div class="step-line flex-1 h-0.5 bg-slate-300 mx-2 transition-colors"></div>
+            <div class="flex flex-col items-center gap-1"><div class="step-dot w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center transition-colors">4</div><span>History</span></div>
+            <div class="step-line flex-1 h-0.5 bg-slate-300 mx-2 transition-colors"></div>
+            <div class="flex flex-col items-center gap-1"><div class="step-dot w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center transition-colors">5</div><span>Docs</span></div>
+            <div class="step-line flex-1 h-0.5 bg-slate-300 mx-2 transition-colors"></div>
+            <div class="flex flex-col items-center gap-1"><div class="step-dot w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center transition-colors">6</div><span>Summary</span></div>
+          </div>
+        </div>
+
+        <!-- Step 1: Language -->
+        <div id="p-step-1" class="patient-step">
+          <div class="glass-card rounded-3xl p-8 md:p-12 shadow-xl text-center">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-medical-100 text-medical-600 flex items-center justify-center text-3xl mb-6">
+              <i class="fa-solid fa-language"></i>
+            </div>
+            <h2 class="font-heading text-3xl font-bold text-navy-900 mb-3">Choose your language</h2>
+            <p class="text-slate-500 mb-8">CAREPATH AI supports multilingual voice & touch interaction.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+              <button onclick="setLanguage('English')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all">English</button>
+              <button onclick="setLanguage('हिन्दी')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all">हिन्दी</button>
+              <button onclick="setLanguage('मराठी')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all">मराठी</button>
+              <button onclick="setLanguage('తెలుగు')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all">తెలుగు</button>
+              <button onclick="setLanguage('தமிழ்')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all">தமிழ்</button>
+              <button onclick="setLanguage('বাংলা')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all">বাংলা</button>
+              <button onclick="setLanguage('ಕನ್ನಡ')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all">ಕನ್ನಡ</button>
+              <button onclick="setLanguage('More...')" class="lang-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50 font-semibold transition-all text-slate-400">More...</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Consent -->
+        <div id="p-step-2" class="patient-step hidden">
+          <div class="glass-card rounded-3xl p-8 md:p-12 shadow-xl">
+            <h2 class="font-heading text-2xl font-bold text-navy-900 mb-4">Digital Consent</h2>
+            <p class="text-slate-600 mb-6">Before we begin, please confirm that you understand how CAREPATH AI will use your health information.</p>
+            <div class="space-y-4 mb-8">
+              <label class="flex items-start gap-3 p-4 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-medical-500 transition-colors">
+                <input type="checkbox" id="consentData" class="mt-1 w-5 h-5 text-medical-600 rounded border-slate-300 focus:ring-medical-500">
+                <span class="text-sm text-slate-700">I consent to collect my symptoms, medical history, allergies, and medications for pre-arrival care coordination.</span>
+              </label>
+              <label class="flex items-start gap-3 p-4 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-medical-500 transition-colors">
+                <input type="checkbox" id="consentShare" class="mt-1 w-5 h-5 text-medical-600 rounded border-slate-300 focus:ring-medical-500">
+                <span class="text-sm text-slate-700">I understand my data will only be shared with the selected hospital after I give explicit consent.</span>
+              </label>
+              <label class="flex items-start gap-3 p-4 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-medical-500 transition-colors">
+                <input type="checkbox" id="consentEmergency" class="mt-1 w-5 h-5 text-medical-600 rounded border-slate-300 focus:ring-medical-500">
+                <span class="text-sm text-slate-700">In case of red-flag symptoms, I authorize CAREPATH AI to alert nearby emergency departments (SIMULATED).</span>
+              </label>
+            </div>
+            <button onclick="acceptConsent()" class="w-full bg-navy-900 hover:bg-navy-800 text-white font-bold py-4 rounded-xl shadow-lg transition-all">I Agree & Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Case Taking -->
+        <div id="p-step-3" class="patient-step hidden">
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 glass-card rounded-3xl p-6 md:p-8 shadow-xl">
+              <h2 class="font-heading text-2xl font-bold text-navy-900 mb-1">Tell us what brings you in</h2>
+              <p class="text-slate-500 mb-6">Speak or type your chief complaint and symptoms.</p>
+
+              <!-- Voice UI -->
+              <div class="bg-slate-900 rounded-2xl p-6 mb-6 text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-20"><i class="fa-solid fa-microphone-lines text-6xl"></i></div>
+                <div class="relative z-10">
+                  <p class="text-sm text-slate-300 mb-2">Voice AI Assistant</p>
+                  <div id="voiceTranscript" class="text-lg font-medium min-h-[3rem] mb-4">Tap the microphone and describe your symptoms...</div>
+                  <div class="flex items-center gap-4">
+                    <button id="micBtn" onclick="toggleVoice()" class="w-14 h-14 rounded-full bg-medical-600 hover:bg-medical-500 flex items-center justify-center text-xl shadow-lg transition-all">
+                      <i class="fa-solid fa-microphone"></i>
+                    </button>
+                    <div id="voiceWaves" class="hidden flex items-end gap-1 h-8">
+                      <div class="w-1 bg-medical-400 rounded-full animate-wave" style="animation-delay:0s"></div>
+                      <div class="w-1 bg-medical-400 rounded-full animate-wave" style="animation-delay:0.1s"></div>
+                      <div class="w-1 bg-medical-400 rounded-full animate-wave" style="animation-delay:0.2s"></div>
+                      <div class="w-1 bg-medical-400 rounded-full animate-wave" style="animation-delay:0.3s"></div>
+                      <div class="w-1 bg-medical-400 rounded-full animate-wave" style="animation-delay:0.4s"></div>
+                    </div>
+                    <span id="voiceStatus" class="text-sm text-slate-400">Tap to speak</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form -->
+              <div class="space-y-5">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Chief Complaint</label>
+                  <input type="text" id="chiefComplaint" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="e.g., Chest pain, headache, fever">
+                </div>
+                <div class="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Symptoms</label>
+                    <textarea id="symptoms" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="Describe your symptoms"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Duration</label>
+                    <input type="text" id="duration" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none mb-4" placeholder="e.g., 2 days">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Severity (1-10)</label>
+                    <input type="range" id="severity" min="1" max="10" value="5" class="w-full accent-medical-600" oninput="document.getElementById('sevVal').innerText=this.value">
+                    <div class="text-right text-sm font-bold text-medical-600">Severity: <span id="sevVal">5</span>/10</div>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">History of Present Illness</label>
+                  <textarea id="hpi" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="When did it start? What makes it better or worse?"></textarea>
+                </div>
+              </div>
+
+              <!-- AI Follow-up -->
+              <div id="aiFollowup" class="hidden mt-6 p-5 rounded-2xl bg-medical-50 border border-medical-200">
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="fa-solid fa-robot text-medical-600"></i>
+                  <span class="font-bold text-medical-800">Adaptive AI Follow-up</span>
+                </div>
+                <div id="followupQuestions" class="space-y-3"></div>
+              </div>
+
+              <div class="mt-8 flex justify-end">
+                <button onclick="saveCaseStep()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all">Continue to Medical History</button>
+              </div>
+            </div>
+
+            <!-- Sidebar: Red Flag Checker -->
+            <div class="glass-card rounded-3xl p-6 shadow-xl h-fit">
+              <h3 class="font-bold text-navy-900 mb-4"><i class="fa-solid fa-shield-heart text-medical-600 mr-2"></i>Red Flag Checker</h3>
+              <p class="text-xs text-slate-500 mb-4">The AI monitors your input for urgent warning signs.</p>
+              <div id="redFlagList" class="space-y-2">
+                <div class="text-sm text-slate-500 italic">No red flags detected yet.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Medical History -->
+        <div id="p-step-4" class="patient-step hidden">
+          <div class="glass-card rounded-3xl p-8 shadow-xl">
+            <h2 class="font-heading text-2xl font-bold text-navy-900 mb-6">Medical History</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Past Medical History</label>
+                <textarea id="pastHistory" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="Diabetes, Hypertension, Asthma, etc."></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Surgical History</label>
+                <textarea id="surgicalHistory" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="Any past surgeries"></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Current Medicines</label>
+                <textarea id="medicines" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="Medications with dosage"></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Allergies</label>
+                <textarea id="allergies" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="Drug/food allergies"></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Family History</label>
+                <textarea id="familyHistory" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="Heart disease, diabetes in family"></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Personal History</label>
+                <textarea id="personalHistory" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none" placeholder="Smoking, alcohol, occupation, diet"></textarea>
+              </div>
+            </div>
+            <div class="mt-8 flex justify-between">
+              <button onclick="prevPatientStep(3)" class="text-slate-500 hover:text-navy-900 font-semibold px-4">Back</button>
+              <button onclick="saveHistoryStep()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all">Continue to Documents</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5: Document Upload / OCR -->
+        <div id="p-step-5" class="patient-step hidden">
+          <div class="glass-card rounded-3xl p-8 shadow-xl">
+            <h2 class="font-heading text-2xl font-bold text-navy-900 mb-2">Upload Medical Documents</h2>
+            <p class="text-slate-500 mb-6">Prescriptions, lab reports, discharge summaries — our Document AI extracts structured data.</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-medical-500 rounded-2xl p-8 text-center bg-slate-50 transition-colors cursor-pointer" onclick="triggerUpload()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+                  <div class="w-16 h-16 mx-auto rounded-full bg-medical-100 text-medical-600 flex items-center justify-center text-2xl mb-4">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                  </div>
+                  <p class="font-semibold text-navy-900">Drag & drop files here</p>
+                  <p class="text-sm text-slate-500 mb-4">or click to upload</p>
+                  <button class="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100"><i class="fa-solid fa-camera mr-2"></i>Camera Upload</button>
+                  <input type="file" id="fileInput" class="hidden" onchange="handleFileSelect(event)">
+                </div>
+
+                <div id="uploadedFiles" class="mt-4 space-y-2"></div>
+              </div>
+
+              <div id="ocrPanel" class="hidden bg-slate-900 rounded-2xl p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="font-bold text-lg"><i class="fa-solid fa-file-waveform mr-2 text-medical-400"></i>OCR Extraction</h3>
+                  <span id="ocrConfidence" class="text-xs bg-medical-600/30 text-medical-300 px-2 py-1 rounded-full border border-medical-500/30">Confidence: 94%</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                  <div class="bg-slate-800 rounded-xl p-3 border border-slate-700">
+                    <p class="text-xs text-slate-400 mb-1">Original Preview</p>
+                    <div class="h-32 bg-slate-700 rounded-lg flex items-center justify-center text-slate-400 text-xs">
+                      <i class="fa-solid fa-file-prescription text-3xl"></i>
+                    </div>
+                  </div>
+                  <div class="bg-slate-800 rounded-xl p-3 border border-slate-700">
+                    <p class="text-xs text-slate-400 mb-1">Extracted Text</p>
+                    <div id="ocrText" class="h-32 overflow-auto text-xs font-mono text-slate-300 custom-scrollbar"></div>
+                  </div>
+                </div>
+                <div id="ocrEntities" class="space-y-2"></div>
+              </div>
+            </div>
+
+            <div class="mt-8 flex justify-between">
+              <button onclick="prevPatientStep(4)" class="text-slate-500 hover:text-navy-900 font-semibold px-4">Back</button>
+              <button onclick="saveDocsStep()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all">View Summary</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6: Structured Summary -->
+        <div id="p-step-6" class="patient-step hidden">
+          <div class="glass-card rounded-3xl p-8 shadow-xl">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="font-heading text-2xl font-bold text-navy-900">Structured Case Summary</h2>
+              <span class="text-xs bg-medical-100 text-medical-700 px-3 py-1 rounded-full font-semibold">AI Generated</span>
+            </div>
+            <div id="summaryContent" class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4"></div>
+
+            <div id="emergencyBanner" class="hidden mt-6 emergency-flash border-l-4 border-red-500 bg-red-50 p-5 rounded-r-2xl">
+              <div class="flex items-start gap-4">
+                <i class="fa-solid fa-truck-medical text-red-600 text-2xl"></i>
+                <div>
+                  <h3 class="font-bold text-red-800 text-lg">POSSIBLE MEDICAL EMERGENCY</h3>
+                  <p class="text-red-700">Urgent medical evaluation may be needed. CAREPATH AI has detected red-flag symptoms.</p>
+                  <button onclick="startEmergencyFlow()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-xl">
+                    Connect to Nearby Hospitals
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div id="nonEmergencyActions" class="mt-8 flex justify-between">
+              <button onclick="prevPatientStep(5)" class="text-slate-500 hover:text-navy-900 font-semibold px-4">Back</button>
+              <button onclick="finishPatient()" class="bg-medical-emerald hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all">
+                Save Case & Finish
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency: Hospital Finder -->
+        <div id="p-emergency" class="patient-step hidden">
+          <div class="glass-card rounded-3xl p-8 shadow-xl">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl animate-pulse">
+                <i class="fa-solid fa-truck-medical"></i>
+              </div>
+              <div>
+                <h2 class="font-heading text-2xl font-bold text-navy-900">Nearby Emergency Hospitals</h2>
+                <p class="text-slate-500">SIMULATED: Finding hospitals near your location.</p>
+              </div>
+            </div>
+
+            <div id="hospitalList" class="grid md:grid-cols-2 gap-4 mb-8"></div>
+
+            <div id="consentPanel" class="hidden bg-white rounded-2xl border border-slate-200 p-6">
+              <h3 class="font-bold text-navy-900 mb-3">Share with <span id="selectedHospitalName" class="text-medical-600"></span>?</h3>
+              <p class="text-sm text-slate-600 mb-4">Only the following will be shared:</p>
+              <ul class="text-sm text-slate-700 list-disc list-inside mb-6 space-y-1">
+                <li>Symptoms & structured summary</li>
+                <li>Allergies & current medicines</li>
+                <li>Relevant history & document findings</li>
+                <li>Red-flag details & estimated arrival time</li>
+              </ul>
+              <div class="flex gap-4">
+                <button onclick="cancelHospital()" class="flex-1 border border-slate-300 text-slate-700 font-semibold py-3 rounded-xl hover:bg-slate-50">Cancel</button>
+                <button onclick="shareWithHospital()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl shadow-lg">
+                  I Consent — Send Alert
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirmation -->
+        <div id="p-confirmation" class="patient-step hidden">
+          <div class="glass-card rounded-3xl p-12 shadow-xl text-center">
+            <div class="w-20 h-20 mx-auto rounded-full bg-medical-100 text-medical-600 flex items-center justify-center text-4xl mb-6">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <h2 class="font-heading text-3xl font-bold text-navy-900 mb-3">Case Submitted</h2>
+            <p class="text-slate-600 mb-6">Your CAREPATH Case ID has been generated. Show this at the hospital.</p>
+            <div class="inline-block bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6">
+              <div id="caseQR"></div>
+              <p id="caseIdDisplay" class="mt-2 font-mono font-bold text-navy-900 text-lg"></p>
+            </div>
+            <p class="text-xs text-slate-400 mb-8">Simulated hospital alert sent. In a production environment, this would securely transmit HL7/FHIR data.</p>
+            <button onclick="logout()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold py-3 px-8 rounded-xl">Return Home</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: DOCTOR -->
+    <section id="view-doctor" class="view min-h-[calc(100vh-5rem)] bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <div>
+            <h2 class="font-heading text-3xl font-bold text-navy-900">Doctor Dashboard</h2>
+            <p class="text-slate-500">Real-time pre-arrival cases and waiting patients.</p>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="simulateIncomingAlert()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl font-semibold shadow-lg text-sm">
+              <i class="fa-solid fa-bell mr-2"></i>Simulate Incoming Alert
+            </button>
+            <button onclick="scanPatientArrival()" class="bg-medical-600 hover:bg-medical-500 text-white px-4 py-2 rounded-xl font-semibold shadow-lg text-sm">
+              <i class="fa-solid fa-qrcode mr-2"></i>Scan Patient Arrival
+            </button>
+          </div>
+        </div>
+
+        <!-- Priority Alerts -->
+        <div id="doctorAlerts" class="mb-8 space-y-4"></div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="glass-card p-5 rounded-2xl shadow-sm">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Waiting</p>
+            <p id="statWaiting" class="text-3xl font-bold text-navy-900">0</p>
+          </div>
+          <div class="glass-card p-5 rounded-2xl shadow-sm">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Incoming</p>
+            <p id="statIncoming" class="text-3xl font-bold text-medical-600">0</p>
+          </div>
+          <div class="glass-card p-5 rounded-2xl shadow-sm">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Priority</p>
+            <p id="statPriority" class="text-3xl font-bold text-red-600">0</p>
+          </div>
+          <div class="glass-card p-5 rounded-2xl shadow-sm">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Acknowledged</p>
+            <p id="statAck" class="text-3xl font-bold text-medical-emerald">0</p>
+          </div>
+        </div>
+
+        <!-- Patients Table -->
+        <div class="glass-card rounded-3xl shadow-xl overflow-hidden">
+          <div class="p-6 border-b border-slate-200 flex items-center justify-between">
+            <h3 class="font-bold text-navy-900 text-lg">Patient Cases</h3>
+            <div class="flex gap-2">
+              <button onclick="filterCases('all')" class="px-3 py-1 rounded-lg text-xs font-semibold bg-navy-900 text-white">All</button>
+              <button onclick="filterCases('incoming')" class="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300">Incoming</button>
+              <button onclick="filterCases('priority')" class="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300">Priority</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 text-slate-500 font-semibold">
+                <tr>
+                  <th class="p-4">Case ID</th>
+                  <th class="p-4">Patient</th>
+                  <th class="p-4">Chief Complaint</th>
+                  <th class="p-4">Priority</th>
+                  <th class="p-4">ETA</th>
+                  <th class="p-4">Status</th>
+                  <th class="p-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="doctorCasesTable" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: ADMIN -->
+    <section id="view-admin" class="view min-h-[calc(100vh-5rem)] bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="mb-8">
+          <h2 class="font-heading text-3xl font-bold text-navy-900">Hospital Administrator</h2>
+          <p class="text-slate-500">Analytics, KPIs, and system performance.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-medical-600">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Total Patients</p>
+            <p id="adminTotalPatients" class="text-3xl font-bold text-navy-900">0</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-medical-teal">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Avg Case Time</p>
+            <p id="adminAvgTime" class="text-3xl font-bold text-navy-900">0m</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-red-500">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Priority Cases</p>
+            <p id="adminPriority" class="text-3xl font-bold text-navy-900">0</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-medical-emerald">
+            <p class="text-xs text-slate-500 font-semibold uppercase">Alerts Acknowledged</p>
+            <p id="adminAck" class="text-3xl font-bold text-navy-900">0%</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="glass-card rounded-3xl p-6 shadow-xl">
+            <h3 class="font-bold text-navy-900 mb-4">Common Symptoms</h3>
+            <canvas id="symptomsChart" height="220"></canvas>
+          </div>
+          <div class="glass-card rounded-3xl p-6 shadow-xl">
+            <h3 class="font-bold text-navy-900 mb-4">Pre-Arrival Timeline</h3>
+            <canvas id="timelineChart" height="220"></canvas>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-3xl p-6 shadow-xl">
+          <h3 class="font-bold text-navy-900 mb-4">Recent Alerts</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 text-slate-500 font-semibold">
+                <tr>
+                  <th class="p-4">Time</th>
+                  <th class="p-4">Case ID</th>
+                  <th class="p-4">Hospital</th>
+                  <th class="p-4">Priority</th>
+                  <th class="p-4">Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminAlertsTable" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Case Detail Modal -->
+  <div id="caseModal" class="fixed inset-0 z-[70] hidden">
+    <div class="absolute inset-0 bg-navy-900/70 backdrop-blur-sm" onclick="closeCaseModal()"></div>
+    <div class="absolute inset-y-0 right-0 w-full md:w-[600px] bg-white shadow-2xl overflow-y-auto custom-scrollbar p-6 md:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-heading text-2xl font-bold text-navy-900">Case Details</h2>
+        <button onclick="closeCaseModal()" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="caseModalContent" class="space-y-6"></div>
+      <div class="mt-8 pt-6 border-t border-slate-200">
+        <h3 class="font-bold text-navy-900 mb-3">Doctor Notes</h3>
+        <textarea id="doctorNote" rows="3" class="w-full p-3 rounded-xl border border-slate-300 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none mb-3" placeholder="Add clinical notes..."></textarea>
+        <button onclick="saveDoctorNote()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold py-2 px-6 rounded-xl">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- README Modal -->
+  <div id="readmeModal" class="fixed inset-0 z-[80] hidden">
+    <div class="absolute inset-0 bg-navy-900/80 backdrop-blur-sm" onclick="toggleReadme()"></div>
+    <div class="absolute inset-x-4 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 top-10 bottom-10 w-full md:w-[800px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="p-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <h2 class="font-heading text-2xl font-bold text-navy-900">CAREPATH AI — README</h2>
+        <button onclick="toggleReadme()" class="w-10 h-10 rounded-full bg-white hover:bg-slate-200 flex items-center justify-center text-slate-600 shadow-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto custom-scrollbar space-y-6 text-sm text-slate-700">
+        <div>
+          <h3 class="font-bold text-navy-900 text-base mb-2">Project Overview</h3>
+          <p>CAREPATH AI is a patient case-taking platform designed for SIH 2026 (Problem Statement 26047). It collects structured patient history before consultation using multilingual voice + touch interaction, adaptive AI questioning, document OCR, structured summaries, red-flag detection, and secure pre-arrival hospital communication.</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-navy-900 text-base mb-2">Proposed Tech Stack</h3>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>Frontend:</strong> Next.js 14 + React + TypeScript + Tailwind CSS</li>
+            <li><strong>Backend:</strong> FastAPI (Python)</li>
+            <li><strong>Database:</strong> PostgreSQL</li>
+            <li><strong>Auth:</strong> JWT (OAuth2 / HTTP-only cookies)</li>
+            <li><strong>Charts:</strong> Recharts (production) / Chart.js (this demo)</li>
+            <li><strong>OCR:</strong> Tesseract / AWS Textract / Google Document AI</li>
+            <li><strong>Voice:</strong> Whisper API / Azure Speech Services</li>
+            <li><strong>Hospital Integration:</strong> HL7 FHIR / HTTPS webhooks</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-navy-900 text-base mb-2">Database Entities</h3>
+          <div class="grid md:grid-cols-2 gap-2 text-xs font-mono bg-slate-100 p-4 rounded-xl">
+            <div>Users</div><div>Patients</div>
+            <div>PatientCases</div><div>Symptoms</div>
+            <div>MedicalHistory</div><div>Documents</div>
+            <div>CaseSummaries</div><div>RedFlagAlerts</div>
+            <div>Hospitals</div><div>HospitalAlerts</div>
+            <div>ConsentRecords</div><div>DoctorNotes</div>
+            <div>AuditLogs</div>
+          </div>
+        </div>
+        <div>
+          <h3 class="font-bold text-navy-900 text-base mb-2">Demo Instructions</h3>
+          <ol class="list-decimal list-inside space-y-1">
+            <li>Click <strong>RUN COMPLETE SIH DEMO</strong> to watch the full patient-to-hospital journey.</li>
+            <li>Login as <strong>Patient</strong> to manually fill a case, upload documents, and trigger emergency flow.</li>
+            <li>Login as <strong>Doctor</strong> to see incoming alerts, acknowledge them, and review AI summaries.</li>
+            <li>Login as <strong>Admin</strong> to view KPI cards and analytics charts.</li>
+          </ol>
+        </div>
+        <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800">
+          <strong>Important:</strong> Emergency alerts and hospital communication in this demo are simulated. A production deployment would connect to real hospital systems via secure APIs.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo Overlay -->
+  <div id="demoOverlay" class="fixed inset-0 z-[90] hidden bg-navy-950/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="max-w-lg w-full bg-white rounded-3xl p-8 shadow-2xl text-center">
+      <div class="w-20 h-20 mx-auto rounded-full bg-medical-100 text-medical-600 flex items-center justify-center text-3xl mb-6 animate-pulse">
+        <i class="fa-solid fa-robot"></i>
+      </div>
+      <h2 class="font-heading text-2xl font-bold text-navy-900 mb-2">Running SIH Demo</h2>
+      <p id="demoStatus" class="text-slate-500 mb-6">Initializing...</p>
+      <div class="w-full bg-slate-200 rounded-full h-2 mb-2">
+        <div id="demoProgress" class="bg-medical-600 h-2 rounded-full transition-all duration-500" style="width:0%"></div>
+      </div>
+      <button onclick="stopDemo()" class="mt-4 text-sm text-slate-500 hover:text-navy-900 font-semibold">Stop Demo</button>
+    </div>
+  </div>
+
+  <script>
+    // ===================== STATE =====================
+    const state = {
+      user: null,
+      role: null,
+      language: 'English',
+      currentCase: null,
+      patientStep: 1,
+      demo: false,
+      demoTimer: null,
+      selectedHospital: null,
+      casesFilter: 'all',
+      hospitals: [
+        { id: 'H1', name: 'Apollo City Hospital', distance: '1.2 km', eta: '4 min', emergency: true, icu: true, lat: 0, lng: 0 },
+        { id: 'H2', name: 'Medanta Super Specialty', distance: '3.4 km', eta: '9 min', emergency: true, icu: true, lat: 0, lng: 0 },
+        { id: 'H3', name: 'City Care Clinic', distance: '5.1 km', eta: '14 min', emergency: false, icu: false, lat: 0, lng: 0 },
+        { id: 'H4', name: 'Fortis Emergency Centre', distance: '6.8 km', eta: '18 min', emergency: true, icu: true, lat: 0, lng: 0 },
+      ],
+      cases: [],
+      alerts: [],
+      charts: {}
+    };
+
+    const redFlags = [
+      'severe chest pain', 'chest pain', 'breathing difficulty', 'shortness of breath',
+      'severe bleeding', 'unconscious', 'unconsciousness', 'sudden weakness',
+      'severe allergic reaction', 'allergic reaction', 'swelling of throat', 'heart attack'
+    ];
+
+    const mockCases = [
+      {
+        id: 'CP-2026-1042', patient: 'Rahul Sharma', age: 34, gender: 'Male', complaint: 'Fever & Cough',
+        symptoms: 'Fever, dry cough, mild fatigue', duration: '3 days', severity: 4, priority: 'Standard',
+        eta: '12 min', status: 'Waiting', acknowledged: true, redFlag: false, note: '',
+        summary: '34-year-old male with 3-day history of low-grade fever and dry cough. No red flags. Likely viral URI.'
+      },
+      {
+        id: 'CP-2026-1043', patient: 'Anita Desai', age: 58, gender: 'Female', complaint: 'Chest Pain',
+        symptoms: 'Severe chest pain radiating to left arm, sweating', duration: '20 min', severity: 9, priority: 'Critical',
+        eta: '3 min', status: 'Incoming', acknowledged: false, redFlag: true, note: '',
+        summary: '58-year-old female with acute chest pain. Red flag triggered. Suspected ACS. ECG and troponin advised on arrival.'
+      },
+      {
+        id: 'CP-2026-1044', patient: 'Vikram Patel', age: 45, gender: 'Male', complaint: 'Breathing Difficulty',
+        symptoms: 'Sudden breathlessness, wheezing', duration: '10 min', severity: 8, priority: 'High',
+        eta: '6 min', status: 'Incoming', acknowledged: true, redFlag: true, note: '',
+        summary: '45-year-old male with acute dyspnea. History of asthma. Red flag detected. Nebulization readiness recommended.'
+      }
+    ];
+
+    // Initialize
+    state.cases = [...mockCases];
+
+    // ===================== UTILS =====================
+    function $(id) { return document.getElementById(id); }
+    function generateId() { return 'CP-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000); }
+    function showToast(message, type = 'info') {
+      const colors = { info: 'bg-navy-900', success: 'bg-medical-emerald', error: 'bg-red-600', warning: 'bg-amber-500' };
+      const icons = { info: 'fa-info-circle', success: 'fa-check-circle', error: 'fa-circle-exclamation', warning: 'fa-triangle-exclamation' };
+      const el = document.createElement('div');
+      el.className = `${colors[type]} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-medium animate-[fadeIn_0.3s_ease-out]`;
+      el.innerHTML = `<i class="fa-solid ${icons[type]}"></i><span>${message}</span>`;
+      $('toastContainer').appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(100%)'; setTimeout(() => el.remove(), 300); }, 4000);
+    }
+
+    // ===================== AUTH / NAVIGATION =====================
+    function login(role) {
+      state.role = role;
+      state.user = { name: role === 'patient' ? 'Demo Patient' : role === 'doctor' ? 'Dr. Priya Menon' : 'Admin Rajesh Rao', role };
+      $('userPill').classList.remove('hidden');
+      $('userPill').classList.add('flex');
+      $('userName').textContent = state.user.name;
+      $('logoutBtn').classList.remove('hidden');
+      $('demoBanner').classList.remove('hidden');
+      if (role === 'patient') {
+        initPatientFlow();
+      } else if (role === 'doctor') {
+        showView('doctor');
+        renderDoctorDashboard();
+      } else {
+        showView('admin');
+        renderAdminDashboard();
+      }
+    }
+
+    function logout() {
+      state.user = null;
+      state.role = null;
+      state.currentCase = null;
+      state.patientStep = 1;
+      state.selectedHospital = null;
+      stopDemo();
+      $('userPill').classList.add('hidden');
+      $('userPill').classList.remove('flex');
+      $('logoutBtn').classList.add('hidden');
+      $('demoBanner').classList.add('hidden');
+      showView('login');
+    }
+
+    function goHome() {
+      if (state.role === 'patient') initPatientFlow();
+      else if (state.role === 'doctor') { showView('doctor'); renderDoctorDashboard(); }
+      else if (state.role === 'admin') { showView('admin'); renderAdminDashboard(); }
+    }
+
+    function showView(name) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      $(`view-${name}`).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleReadme() {
+      $('readmeModal').classList.toggle('hidden');
+    }
+
+    // ===================== PATIENT FLOW =====================
+    function initPatientFlow() {
+      state.currentCase = {
+        id: generateId(), patient: state.user?.name || 'Guest Patient', age: 34, gender: 'Male',
+        language: 'English', complaint: '', symptoms: '', duration: '', severity: 5, hpi: '',
+        pastHistory: '', surgicalHistory: '', medicines: '', allergies: '', familyHistory: '', personalHistory: '',
+        documents: [], ocr: {}, redFlag: false, priority: 'Standard', status: 'Draft', eta: '12 min',
+        acknowledged: false, note: '', consent: false, sharedHospital: null, sharedAt: null
+      };
+      state.patientStep = 1;
+      state.selectedHospital = null;
+      showView('patient');
+      $('patientProgress').classList.remove('hidden');
+      renderPatientStep();
+    }
+
+    function renderPatientStep() {
+      document.querySelectorAll('.patient-step').forEach(s => s.classList.add('hidden'));
+      $(`p-step-${state.patientStep}`).classList.remove('hidden');
+      const dots = document.querySelectorAll('.step-dot');
+      const lines = document.querySelectorAll('.step-line');
+      dots.forEach((d, i) => {
+        if (i < state.patientStep) d.classList.add('active');
+        else d.classList.remove('active');
+      });
+      lines.forEach((l, i) => {
+        if (i < state.patientStep - 1) l.classList.add('active');
+        else l.classList.remove('active');
+      });
+      if (state.patientStep === 6) renderSummary();
+    }
+
+    function nextPatientStep() {
+      state.patientStep = Math.min(6, state.patientStep + 1);
+      renderPatientStep();
+    }
+
+    function prevPatientStep(n) {
+      state.patientStep = n;
+      renderPatientStep();
+    }
+
+    function setLanguage(lang) {
+      state.language = lang;
+      state.currentCase.language = lang;
+      showToast(`Language set to ${lang}`, 'success');
+      nextPatientStep();
+    }
+
+    function acceptConsent() {
+      const c1 = $('consentData').checked, c2 = $('consentShare').checked, c3 = $('consentEmergency').checked;
+      if (!c1 || !c2 || !c3) { showToast('Please accept all consent items', 'warning'); return; }
+      state.currentCase.consent = true;
+      showToast('Consent recorded digitally', 'success');
+      nextPatientStep();
+    }
+
+    // Voice simulation
+    let voiceActive = false;
+    function toggleVoice() {
+      voiceActive = !voiceActive;
+      const btn = $('micBtn');
+      const waves = $('voiceWaves');
+      const status = $('voiceStatus');
+      const transcript = $('voiceTranscript');
+      if (voiceActive) {
+        btn.classList.add('mic-ring', 'bg-red-500');
+        btn.classList.remove('bg-medical-600');
+        waves.classList.remove('hidden');
+        status.textContent = 'Listening...';
+        transcript.textContent = '';
+        simulateVoiceInput();
+      } else {
+        btn.classList.remove('mic-ring', 'bg-red-500');
+        btn.classList.add('bg-medical-600');
+        waves.classList.add('hidden');
+        status.textContent = 'Tap to speak';
+      }
+    }
+
+    function simulateVoiceInput() {
+      const phrases = [
+        "I have severe chest pain", " since last 20 minutes", " it's radiating to my left arm", " and I'm sweating"
+      ];
+      let i = 0;
+      const transcript = $('voiceTranscript');
+      const interval = setInterval(() => {
+        if (!voiceActive || i >= phrases.length) { clearInterval(interval); return; }
+        transcript.textContent += phrases[i];
+        i++;
+        if (i === phrases.length) {
+          setTimeout(() => {
+            $('chiefComplaint').value = 'Severe chest pain';
+            $('symptoms').value = 'Severe chest pain radiating to left arm, sweating';
+            $('duration').value = '20 minutes';
+            $('severity').value = 9;
+            $('sevVal').textContent = '9';
+            $('hpi').value = 'Sudden onset severe chest pain 20 minutes ago while resting. Associated with sweating. No relief with rest.';
+            toggleVoice();
+            checkRedFlags();
+            showAdaptiveQuestions();
+            showToast('Voice input captured', 'success');
+          }, 600);
+        }
+      }, 600);
+    }
+
+    function checkRedFlags() {
+      const text = [
+        $('chiefComplaint').value, $('symptoms').value, $('hpi').value
+      ].join(' ').toLowerCase();
+      const found = redFlags.filter(rf => text.includes(rf));
+      const list = $('redFlagList');
+      if (found.length) {
+        state.currentCase.redFlag = true;
+        state.currentCase.priority = 'Critical';
+        list.innerHTML = found.map(f => `<div class="flex items-center gap-2 text-sm text-red-700 bg-red-50 px-3 py-2 rounded-lg border border-red-200"><i class="fa-solid fa-triangle-exclamation"></i>${f}</div>`).join('');
+      } else {
+        state.currentCase.redFlag = false;
+        state.currentCase.priority = 'Standard';
+        list.innerHTML = '<div class="text-sm text-slate-500 italic">No red flags detected yet.</div>';
+      }
+    }
+
+    function showAdaptiveQuestions() {
+      const complaint = ($('chiefComplaint').value || '').toLowerCase();
+      const container = $('aiFollowup');
+      const questions = $('followupQuestions');
+      let qs = [];
+      if (complaint.includes('chest')) qs = ['Is the pain crushing or pressure-like?', 'Does it radiate to your arm, jaw, or back?', 'Are you experiencing shortness of breath or sweating?'];
+      else if (complaint.includes('breath')) qs = ['Did it start suddenly or gradually?', 'Do you have a history of asthma or COPD?', 'Any wheezing or chest tightness?'];
+      else if (complaint.includes('head')) qs = ['Is this the worst headache of your life?', 'Any vision changes or neck stiffness?'];
+      else qs = ['When did it start?', 'What makes it better or worse?', 'Any associated symptoms?'];
+      questions.innerHTML = qs.map(q => `<label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" class="mt-1 text-medical-600 rounded"><span class="text-sm text-slate-700">${q}</span></label>`).join('');
+      container.classList.remove('hidden');
+    }
+
+    function saveCaseStep() {
+      if (!$('chiefComplaint').value.trim()) { showToast('Please enter chief complaint', 'warning'); return; }
+      state.currentCase.complaint = $('chiefComplaint').value;
+      state.currentCase.symptoms = $('symptoms').value;
+      state.currentCase.duration = $('duration').value;
+      state.currentCase.severity = parseInt($('severity').value);
+      state.currentCase.hpi = $('hpi').value;
+      checkRedFlags();
+      nextPatientStep();
+    }
+
+    function saveHistoryStep() {
+      state.currentCase.pastHistory = $('pastHistory').value;
+      state.currentCase.surgicalHistory = $('surgicalHistory').value;
+      state.currentCase.medicines = $('medicines').value;
+      state.currentCase.allergies = $('allergies').value;
+      state.currentCase.familyHistory = $('familyHistory').value;
+      state.currentCase.personalHistory = $('personalHistory').value;
+      nextPatientStep();
+    }
+
+    // Documents / OCR
+    function triggerUpload() { $('fileInput').click(); }
+    function handleFileSelect(e) { processFile(e.target.files[0]); }
+    function handleDrop(e) { e.preventDefault(); processFile(e.dataTransfer.files[0]); }
+
+    function processFile(file) {
+      if (!file) return;
+      const list = $('uploadedFiles');
+      const item = document.createElement('div');
+      item.className = 'flex items-center gap-3 p-3 rounded-xl bg-slate-100 border border-slate-200 text-sm';
+      item.innerHTML = `<i class="fa-solid fa-file-medical text-medical-600"></i><span class="flex-1 truncate">${file.name}</span><span class="text-xs text-slate-500">Uploading...</span>`;
+      list.appendChild(item);
+      showToast('Document uploaded. Running OCR...', 'info');
+      setTimeout(() => {
+        item.querySelector('span:last-child').textContent = 'Processed';
+        runOCRSimulation();
+      }, 1200);
+    }
+
+    function runOCRSimulation() {
+      const sampleText = `Apollo Diagnostics\nPatient: Rahul Sharma\nDate: 12 Oct 2025\nTests:\n- HbA1c: 7.2%\n- Total Cholesterol: 210 mg/dL\n- LDL: 145 mg/dL\nMedicines:\n- Atorvastatin 20mg OD\n- Metformin 500mg BD\nFollow up in 2 weeks.`;
+      state.currentCase.documents.push({ name: 'Lab_Report_Oct2025.pdf', type: 'Lab Report' });
+      state.currentCase.ocr = {
+        text: sampleText,
+        entities: [
+          { label: 'Medicine', value: 'Atorvastatin 20mg', confidence: 98 },
+          { label: 'Medicine', value: 'Metformin 500mg', confidence: 97 },
+          { label: 'Lab Value', value: 'HbA1c: 7.2%', confidence: 95 },
+          { label: 'Lab Value', value: 'LDL: 145 mg/dL', confidence: 94 },
+          { label: 'Date', value: '12 Oct 2025', confidence: 99 },
+          { label: 'Condition', value: 'Dyslipidemia / Diabetes', confidence: 89 }
+        ]
+      };
+      $('ocrPanel').classList.remove('hidden');
+      $('ocrText').textContent = sampleText;
+      $('ocrConfidence').textContent = 'Confidence: 94%';
+      $('ocrEntities').innerHTML = state.currentCase.ocr.entities.map(e => `
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-800 border border-slate-700">
+          <div>
+            <span class="text-xs text-slate-400">${e.label}</span>
+            <div class="text-sm font-medium text-white">${e.value}</div>
+          </div>
+          <span class="text-xs font-bold text-medical-400">${e.confidence}%</span>
+        </div>
+      `).join('');
+      showToast('OCR extraction complete', 'success');
+    }
+
+    function saveDocsStep() { nextPatientStep(); }
+
+    function renderSummary() {
+      const c = state.currentCase;
+      $('summaryContent').innerHTML = `
+        <div class="grid md:grid-cols-2 gap-4">
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Chief Complaint</span><p class="font-semibold text-navy-900">${c.complaint || '—'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Severity</span><p class="font-semibold text-navy-900">${c.severity}/10</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Symptoms</span><p class="text-slate-700">${c.symptoms || '—'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Duration</span><p class="text-slate-700">${c.duration || '—'}</p></div>
+          <div class="md:col-span-2"><span class="text-xs text-slate-500 uppercase font-bold">History of Present Illness</span><p class="text-slate-700">${c.hpi || '—'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Past History</span><p class="text-slate-700">${c.pastHistory || '—'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Surgical History</span><p class="text-slate-700">${c.surgicalHistory || '—'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Medicines</span><p class="text-slate-700">${c.medicines || '—'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Allergies</span><p class="text-slate-700">${c.allergies || '—'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Documents</span><p class="text-slate-700">${c.documents.map(d => d.name).join(', ') || 'None'}</p></div>
+          <div><span class="text-xs text-slate-500 uppercase font-bold">Priority</span><p class="font-bold ${c.redFlag ? 'text-red-600' : 'text-medical-emerald'}">${c.priority}</p></div>
+        </div>
+      `;
+      if (c.redFlag) $('emergencyBanner').classList.remove('hidden');
+      else $('emergencyBanner').classList.add('hidden');
+    }
+
+    function startEmergencyFlow() {
+      document.querySelectorAll('.patient-step').forEach(s => s.classList.add('hidden'));
+      $('p-emergency').classList.remove('hidden');
+      $('patientProgress').classList.add('hidden');
+      renderHospitals();
+    }
+
+    function renderHospitals() {
+      $('hospitalList').innerHTML = state.hospitals.map(h => `
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 hover:border-medical-500 hover:shadow-md transition-all cursor-pointer" onclick="selectHospital('${h.id}')">
+          <div class="flex items-start justify-between mb-2">
+            <h4 class="font-bold text-navy-900">${h.name}</h4>
+            ${h.emergency ? '<span class="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">EMERGENCY</span>' : ''}
+          </div>
+          <div class="space-y-1 text-sm text-slate-600">
+            <p><i class="fa-solid fa-location-dot w-5 text-medical-500"></i>${h.distance} away</p>
+            <p><i class="fa-solid fa-clock w-5 text-medical-500"></i>ETA: ${h.eta}</p>
+            <p><i class="fa-solid fa-bed-pulse w-5 text-medical-500"></i>ICU: ${h.icu ? 'Available' : 'Not available'}</p>
+          </div>
+          <button class="mt-4 w-full bg-navy-900 hover:bg-navy-800 text-white text-sm font-semibold py-2 rounded-xl">Select Hospital</button>
+        </div>
+      `).join('');
+    }
+
+    function selectHospital(id) {
+      state.selectedHospital = state.hospitals.find(h => h.id === id);
+      $('selectedHospitalName').textContent = state.selectedHospital.name;
+      $('consentPanel').classList.remove('hidden');
+      $('hospitalList').classList.add('hidden');
+    }
+
+    function cancelHospital() {
+      state.selectedHospital = null;
+      $('consentPanel').classList.add('hidden');
+      $('hospitalList').classList.remove('hidden');
+    }
+
+    function shareWithHospital() {
+      if (!state.selectedHospital) return;
+      state.currentCase.sharedHospital = state.selectedHospital.name;
+      state.currentCase.sharedAt = new Date().toISOString();
+      state.currentCase.status = 'Incoming';
+      state.currentCase.eta = state.selectedHospital.eta;
+      state.cases.unshift({ ...state.currentCase });
+      state.alerts.unshift({
+        time: new Date().toLocaleTimeString(),
+        caseId: state.currentCase.id,
+        hospital: state.selectedHospital.name,
+        priority: state.currentCase.priority,
+        status: 'Sent'
+      });
+      showToast(`Alert sent to ${state.selectedHospital.name}`, 'success');
+      document.querySelectorAll('.patient-step').forEach(s => s.classList.add('hidden'));
+      $('p-confirmation').classList.remove('hidden');
+      $('caseIdDisplay').textContent = state.currentCase.id;
+      $('caseQR').innerHTML = '';
+      new QRCode($('caseQR'), { text: state.currentCase.id, width: 128, height: 128, colorDark: '#0f172a', colorLight: '#ffffff' });
+    }
+
+    function finishPatient() {
+      state.currentCase.status = 'Draft';
+      state.cases.unshift({ ...state.currentCase });
+      showToast('Case saved successfully', 'success');
+      document.querySelectorAll('.patient-step').forEach(s => s.classList.add('hidden'));
+      $('p-confirmation').classList.remove('hidden');
+      $('patientProgress').classList.add('hidden');
+      $('caseIdDisplay').textContent = state.currentCase.id;
+      $('caseQR').innerHTML = '';
+      new QRCode($('caseQR'), { text: state.currentCase.id, width: 128, height: 128, colorDark: '#0f172a', colorLight: '#ffffff' });
+    }
+
+    // ===================== DOCTOR DASHBOARD =====================
+    function renderDoctorDashboard() {
+      const filtered = state.cases.filter(c => state.casesFilter === 'all' || (state.casesFilter === 'incoming' && c.status === 'Incoming') || (state.casesFilter === 'priority' && c.redFlag));
+      $('statWaiting').textContent = state.cases.filter(c => c.status === 'Waiting').length;
+      $('statIncoming').textContent = state.cases.filter(c => c.status === 'Incoming').length;
+      $('statPriority').textContent = state.cases.filter(c => c.redFlag).length;
+      $('statAck').textContent = state.cases.filter(c => c.acknowledged).length;
+
+      // Priority alerts
+      const priorityCases = state.cases.filter(c => c.redFlag && !c.acknowledged && c.status === 'Incoming');
+      $('doctorAlerts').innerHTML = priorityCases.length ? priorityCases.map(c => `
+        <div class="emergency-flash border-l-4 border-red-600 bg-red-50 rounded-r-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1"><span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">INCOMING PRIORITY PATIENT</span><span class="text-xs text-slate-500">Case ${c.id}</span></div>
+            <h3 class="font-bold text-navy-900 text-lg">${c.patient} • ${c.age}y ${c.gender}</h3>
+            <p class="text-slate-700"><strong>Chief Complaint:</strong> ${c.complaint}</p>
+            <p class="text-slate-700"><strong>ETA:</strong> ${c.eta} • <strong>Allergies:</strong> ${c.allergies || 'None'} • <strong>Meds:</strong> ${c.medicines || 'None'}</p>
+            <p class="text-sm text-slate-600 mt-1"><strong>AI Summary:</strong> ${c.summary}</p>
+          </div>
+          <button onclick="acknowledgeCase('${c.id}')" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg whitespace-nowrap">Acknowledge Alert</button>
+        </div>
+      `).join('') : '<div class="text-slate-500 text-sm">No active priority alerts.</div>';
+
+      // Table
+      $('doctorCasesTable').innerHTML = filtered.map(c => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-4 font-mono font-semibold text-navy-900">${c.id}</td>
+          <td class="p-4 font-medium">${c.patient}</td>
+          <td class="p-4">${c.complaint}</td>
+          <td class="p-4"><span class="px-2 py-1 rounded-full text-xs font-bold ${c.redFlag ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${c.priority}</span></td>
+          <td class="p-4">${c.eta}</td>
+          <td class="p-4"><span class="px-2 py-1 rounded-lg text-xs font-semibold ${c.status === 'Incoming' ? 'bg-amber-100 text-amber-700' : c.status === 'Arrived' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-600'}">${c.status}</span></td>
+          <td class="p-4"><button onclick="openCase('${c.id}')" class="text-medical-600 hover:text-medical-700 font-semibold text-xs">View Case</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function filterCases(type) { state.casesFilter = type; renderDoctorDashboard(); }
+
+    function acknowledgeCase(id) {
+      const c = state.cases.find(x => x.id === id);
+      if (c) { c.acknowledged = true; showToast(`Alert ${id} acknowledged`, 'success'); renderDoctorDashboard(); renderAdminDashboard(); }
+    }
+
+    function simulateIncomingAlert() {
+      const newCase = {
+        id: generateId(), patient: 'Simulated Patient', age: 62, gender: 'Male', complaint: 'Severe allergic reaction',
+        symptoms: 'Facial swelling, hives, breathing difficulty', duration: '5 min', severity: 9, priority: 'Critical',
+        eta: '5 min', status: 'Incoming', acknowledged: false, redFlag: true, note: '',
+        summary: '62-year-old male with suspected anaphylaxis. Red flag triggered. Epinephrine readiness recommended.'
+      };
+      state.cases.unshift(newCase);
+      state.alerts.unshift({ time: new Date().toLocaleTimeString(), caseId: newCase.id, hospital: 'Apollo City Hospital', priority: 'Critical', status: 'Sent' });
+      showToast('Simulated incoming priority alert', 'warning');
+      renderDoctorDashboard();
+      renderAdminDashboard();
+    }
+
+    function scanPatientArrival() {
+      const incoming = state.cases.find(c => c.status === 'Incoming');
+      if (!incoming) { showToast('No incoming patient to scan', 'info'); return; }
+      incoming.status = 'Arrived';
+      showToast(`Patient ${incoming.id} arrived — case opened`, 'success');
+      renderDoctorDashboard();
+      openCase(incoming.id);
+    }
+
+    function openCase(id) {
+      const c = state.cases.find(x => x.id === id);
+      if (!c) return;
+      state.openCaseId = id;
+      $('caseModal').classList.remove('hidden');
+      $('caseModalContent').innerHTML = `
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-14 h-14 rounded-full bg-medical-100 text-medical-600 flex items-center justify-center text-xl"><i class="fa-solid fa-user-injured"></i></div>
+          <div>
+            <h3 class="font-bold text-navy-900 text-xl">${c.patient}</h3>
+            <p class="text-sm text-slate-500">${c.age} years • ${c.gender} • Case ID: ${c.id}</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div class="p-3 bg-slate-50 rounded-xl"><span class="text-xs text-slate-500 uppercase font-bold">Chief Complaint</span><p class="font-semibold">${c.complaint}</p></div>
+          <div class="p-3 bg-slate-50 rounded-xl"><span class="text-xs text-slate-500 uppercase font-bold">Priority</span><p class="font-bold ${c.redFlag ? 'text-red-600' : 'text-green-600'}">${c.priority}</p></div>
+          <div class="p-3 bg-slate-50 rounded-xl"><span class="text-xs text-slate-500 uppercase font-bold">Symptoms</span><p>${c.symptoms}</p></div>
+          <div class="p-3 bg-slate-50 rounded-xl"><span class="text-xs text-slate-500 uppercase font-bold">Duration</span><p>${c.duration}</p></div>
+          <div class="p-3 bg-slate-50 rounded-xl"><span class="text-xs text-slate-500 uppercase font-bold">Medicines</span><p>${c.medicines || '—'}</p></div>
+          <div class="p-3 bg-slate-50 rounded-xl"><span class="text-xs text-slate-500 uppercase font-bold">Allergies</span><p>${c.allergies || '—'}</p></div>
+        </div>
+        <div class="p-4 bg-medical-50 border border-medical-200 rounded-2xl">
+          <h4 class="font-bold text-medical-800 mb-1"><i class="fa-solid fa-robot mr-2"></i>AI Summary</h4>
+          <p class="text-sm text-slate-700">${c.summary || 'No AI summary available.'}</p>
+        </div>
+      `;
+      $('doctorNote').value = c.note || '';
+    }
+
+    function closeCaseModal() { $('caseModal').classList.add('hidden'); state.openCaseId = null; }
+
+    function saveDoctorNote() {
+      if (!state.openCaseId) return;
+      const c = state.cases.find(x => x.id === state.openCaseId);
+      c.note = $('doctorNote').value;
+      showToast('Doctor note saved', 'success');
+      closeCaseModal();
+      renderDoctorDashboard();
+    }
+
+    // ===================== ADMIN DASHBOARD =====================
+    function renderAdminDashboard() {
+      const total = state.cases.length;
+      const priority = state.cases.filter(c => c.redFlag).length;
+      const ack = state.cases.filter(c => c.acknowledged).length;
+      const ackRate = total ? Math.round((ack / total) * 100) : 0;
+      $('adminTotalPatients').textContent = total;
+      $('adminAvgTime').textContent = (8 + Math.floor(Math.random() * 7)) + 'm';
+      $('adminPriority').textContent = priority;
+      $('adminAck').textContent = ackRate + '%';
+
+      $('adminAlertsTable').innerHTML = state.alerts.slice(0, 6).map(a => `
+        <tr>
+          <td class="p-4">${a.time}</td>
+          <td class="p-4 font-mono font-semibold">${a.caseId}</td>
+          <td class="p-4">${a.hospital}</td>
+          <td class="p-4"><span class="px-2 py-1 rounded-full text-xs font-bold ${a.priority === 'Critical' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}">${a.priority}</span></td>
+          <td class="p-4"><span class="text-xs font-semibold ${a.status === 'Acknowledged' ? 'text-green-600' : 'text-medical-600'}">${a.status}</span></td>
+        </tr>
+      `).join('');
+
+      renderCharts();
+    }
+
+    function renderCharts() {
+      const symptomCounts = {};
+      state.cases.forEach(c => {
+        const key = c.complaint.split(' ')[0] || 'Other';
+        symptomCounts[key] = (symptomCounts[key] || 0) + 1;
+      });
+      const labels = Object.keys(symptomCounts).length ? Object.keys(symptomCounts) : ['Chest', 'Fever', 'Breath', 'Allergy', 'Other'];
+      const data = Object.values(symptomCounts).length ? Object.values(symptomCounts) : [3, 4, 2, 1, 2];
+
+      if (state.charts.symptoms) state.charts.symptoms.destroy();
+      state.charts.symptoms = new Chart($('symptomsChart'), {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: ['#0284c7', '#0d9488', '#ef4444', '#f59e0b', '#94a3b8'],
+            borderWidth: 0
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+
+      if (state.charts.timeline) state.charts.timeline.destroy();
+      state.charts.timeline = new Chart($('timelineChart'), {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Pre-arrival cases',
+            data: [12, 19, 15, 22, 18, 24, 20],
+            borderColor: '#0369a1',
+            backgroundColor: 'rgba(2,132,199,0.1)',
+            fill: true,
+            tension: 0.4
+          }, {
+            label: 'Priority alerts',
+            data: [2, 4, 3, 5, 2, 6, 4],
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239,68,68,0.05)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+      });
+    }
+
+    // ===================== FULL DEMO =====================
+    function runFullDemo() {
+      stopDemo();
+      state.demo = true;
+      $('demoOverlay').classList.remove('hidden');
+      updateDemo('Starting complete patient journey...', 5);
+      state.demoTimer = setTimeout(() => {
+        login('patient');
+        updateDemo('Patient selects language and gives consent', 15);
+        setLanguage('English');
+        $('consentData').checked = true; $('consentShare').checked = true; $('consentEmergency').checked = true;
+        state.demoTimer = setTimeout(() => {
+          acceptConsent();
+          updateDemo('Voice AI captures chief complaint', 30);
+          state.demoTimer = setTimeout(() => {
+            toggleVoice();
+            state.demoTimer = setTimeout(() => {
+              updateDemo('AI detects red flag: severe chest pain', 45);
+              state.demoTimer = setTimeout(() => {
+                saveCaseStep();
+                state.demoTimer = setTimeout(() => {
+                  // Auto-fill history
+                  $('pastHistory').value = 'Hypertension, Type 2 Diabetes';
+                  $('surgicalHistory').value = 'Appendectomy 2015';
+                  $('medicines').value = 'Amlodipine 5mg, Metformin 500mg';
+                  $('allergies').value = 'Penicillin';
+                  $('familyHistory').value = 'Father had heart disease';
+                  $('personalHistory').value = 'Non-smoker, occasional alcohol';
+                  saveHistoryStep();
+                  updateDemo('Medical history captured', 55);
+                  state.demoTimer = setTimeout(() => {
+                    runOCRSimulation();
+                    updateDemo('Document OCR extracts medicines & lab values', 70);
+                    state.demoTimer = setTimeout(() => {
+                      saveDocsStep();
+                      updateDemo('Structured summary generated', 80);
+                      state.demoTimer = setTimeout(() => {
+                        startEmergencyFlow();
+                        updateDemo('Emergency flow: finding nearby hospitals', 85);
+                        state.demoTimer = setTimeout(() => {
+                          selectHospital('H1');
+                          updateDemo('Patient consents to share data with hospital', 90);
+                          state.demoTimer = setTimeout(() => {
+                            shareWithHospital();
+                            updateDemo('Pre-arrival alert sent to hospital', 95);
+                            state.demoTimer = setTimeout(() => {
+                              login('doctor');
+                              updateDemo('Doctor receives and acknowledges case', 100);
+                              state.demoTimer = setTimeout(() => {
+                                const c = state.cases[0];
+                                if (c) acknowledgeCase(c.id);
+                                stopDemo();
+                                showToast('SIH Demo complete!', 'success');
+                              }, 1500);
+                            }, 1200);
+                          }, 1200);
+                        }, 1200);
+                      }, 1200);
+                    }, 1500);
+                  }, 1200);
+                }, 1200);
+              }, 1500);
+            }, 3500);
+          }, 800);
+        }, 800);
+      }, 800);
+    }
+
+    function updateDemo(text, pct) {
+      $('demoStatus').textContent = text;
+      $('demoProgress').style.width = pct + '%';
+    }
+
+    function stopDemo() {
+      state.demo = false;
+      clearTimeout(state.demoTimer);
+      $('demoOverlay').classList.add('hidden');
+      $('demoProgress').style.width = '0%';
+      if (voiceActive) toggleVoice();
+    }
+
+    // Init
+    showView('login');
+  </script>
+</body>
+</html>
